@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chess Game with AI Opponent
+
+A web-based chess game built with Next.js and React where you can play against an AI opponent powered by your local LM Studio instance.
+
+## Features
+
+- Interactive chess board with drag-and-drop piece movement
+- AI opponent powered by LM Studio
+- Game state tracking (check, checkmate, draw)
+- Responsive design that works on desktop and mobile
+- Settings panel to configure LM Studio connection
+
+## Technologies Used
+
+- Next.js 15 with App Router
+- React 18
+- TypeScript
+- Tailwind CSS
+- chess.js (for chess logic)
+- react-chessboard (for the UI)
+- Axios (for API calls to LM Studio)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18 or later
+- LM Studio running locally with an API endpoint
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## LM Studio Integration
 
-## Learn More
+The chess game connects to your local LM Studio instance to power the AI opponent. Make sure LM Studio is running and accessible at the URL configured in the application settings.
 
-To learn more about Next.js, take a look at the following resources:
+Default URL: `http://localhost:11434/v1`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application sends the current board state to LM Studio and expects a valid chess move in return. The AI is instructed to play as black and provide moves in algebraic notation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How to Play
 
-## Deploy on Vercel
+1. You play as white, and the AI plays as black
+2. Make your move by dragging and dropping pieces on the board
+3. The AI will automatically respond with its move
+4. The game status is displayed below the board
+5. Use the "Reset Game" button to start a new game
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is open source and available under the MIT License.
