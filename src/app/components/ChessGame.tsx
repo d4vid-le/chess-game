@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react'; // Removed useCallback
 import { Chess, Move, PieceSymbol, Square } from 'chess.js'; // Import necessary types
 import { Chessboard } from 'react-chessboard';
 import { checkLMStudioConnection, fetchRawAIMove, ConnectionStatus } from '../services/lmStudioService'; // Import service functions
@@ -33,7 +33,7 @@ export default function ChessGame({ lmStudioUrl }: ChessGameProps) {
 
   // --- Utility Functions ---
 
-  const getPieceSymbol = (piece: string, _color: string) => {
+  const getPieceSymbol = (piece: string) => { // Removed unused _color parameter
     const symbols: Record<string, string> = { p: '♟', n: '♞', b: '♝', r: '♜', q: '♛', k: '♚' };
     return symbols[piece.toLowerCase()] || '';
   };
@@ -86,7 +86,8 @@ export default function ChessGame({ lmStudioUrl }: ChessGameProps) {
       setGameStates(newStates);
       setCurrentStateIndex(newStates.length - 1);
     }
-  }, [game]); // Depend directly on the game state object
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [game, currentStateIndex, gameStates]); // Added missing dependencies
 
   // Update game status and move history based on the current game state
   useEffect(() => {
@@ -239,8 +240,8 @@ export default function ChessGame({ lmStudioUrl }: ChessGameProps) {
       let moveResult: Move | null = null;
       try {
         moveResult = tempGame.move(aiMoveText); // Try making the move
-      } catch (e) {
-         console.log(`Initial move validation failed for "${aiMoveText}", trying variations...`);
+      } catch (error) { // Changed 'e' to 'error' and added log
+         console.log(`Initial move validation failed for "${aiMoveText}", trying variations... Error: ${error}`);
          // Attempt variations if direct move fails (e.g., case, missing piece prefix)
          const legalMovesVerbose = new Chess(currentFen).moves({verbose: true});
          const foundMove = legalMovesVerbose.find(m =>
@@ -556,7 +557,7 @@ export default function ChessGame({ lmStudioUrl }: ChessGameProps) {
                   {capturedPieces.b.length === 0 && <p className="text-xs text-gray-500 italic">None</p>}
                   {capturedPieces.b.map((piece) => (
                     <div key={`captured-b-${piece.type}`} className="flex items-center" title={`${getPieceName(piece.type)}`}>
-                      <span className="text-base text-gray-300 w-5 h-5 flex items-center justify-center">{getPieceSymbol(piece.type, 'b')}</span>
+                      <span className="text-base text-gray-300 w-5 h-5 flex items-center justify-center">{getPieceSymbol(piece.type)}</span>
                       {piece.count > 1 && <span className="text-xs text-gray-400 ml-0.5">x{piece.count}</span>}
                     </div>
                   ))}
@@ -569,7 +570,7 @@ export default function ChessGame({ lmStudioUrl }: ChessGameProps) {
                   {capturedPieces.w.length === 0 && <p className="text-xs text-gray-500 italic">None</p>}
                   {capturedPieces.w.map((piece) => (
                     <div key={`captured-w-${piece.type}`} className="flex items-center" title={`${getPieceName(piece.type)}`}>
-                      <span className="text-base text-white w-5 h-5 flex items-center justify-center">{getPieceSymbol(piece.type, 'w')}</span>
+                      <span className="text-base text-white w-5 h-5 flex items-center justify-center">{getPieceSymbol(piece.type)}</span>
                       {piece.count > 1 && <span className="text-xs text-gray-400 ml-0.5">x{piece.count}</span>}
                     </div>
                   ))}
@@ -616,7 +617,7 @@ export default function ChessGame({ lmStudioUrl }: ChessGameProps) {
               {(['q', 'r', 'b', 'n'] as PieceSymbol[]).map(piece => (
                 <button key={piece} onClick={() => handlePromotion(piece)} className="w-16 h-16 flex items-center justify-center text-4xl bg-gray-700 hover:bg-gray-600 rounded-md border border-gray-600" title={getPieceName(piece)}>
                   {/* Assuming white promotion for simplicity, adjust if black can promote */}
-                  {getPieceSymbol(piece, 'w')}
+                  {getPieceSymbol(piece)}
                 </button>
               ))}
             </div>

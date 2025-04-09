@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios'; // Removed unused AxiosError import
 
 // Interfaces for API responses
 export interface LMStudioChoice {
@@ -11,14 +11,14 @@ export interface LMStudioChoice {
 export interface LMStudioResponse {
   choices: LMStudioChoice[];
   model?: string; // Model name might be in the response
-  [key: string]: any;
+  [key: string]: unknown; // Replaced any with unknown
 }
 
 export interface LMStudioModelInfo {
   id: string;
   object: string;
   created: number;
-  [key: string]: any;
+  [key: string]: unknown; // Replaced any with unknown
 }
 
 export interface LMStudioModelsResponse {
